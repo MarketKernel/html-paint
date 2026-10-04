@@ -1,0 +1,30 @@
+name: test
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+      # ubuntu-latest ships Chrome at /usr/bin/google-chrome, where tests/app.mjs looks.
+      - run: npm run test:browser
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: html-paint
+          path: build/paint.html

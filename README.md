@@ -9,8 +9,14 @@ theme, and fits a phone's screen as well as a desktop's.
 
 ## Use it
 
-Build it (below) and open `build/paint.html` in a browser — Chrome, Edge, Firefox or
-Safari. That one file is the whole program: copy it anywhere, mail it, put it on a USB stick.
+Download `paint-v<version>.html` from the
+[releases](https://github.com/MarketKernel/html-paint/releases), or build it (below), and
+open it in a browser — Chrome, Edge, Firefox or Safari. That one file is the whole program:
+copy it anywhere, mail it, put it on a USB stick.
+
+Or open it on [GitHub Pages](https://marketkernel.github.io/html-paint/) and install it as
+an app (the install button in the address bar; Share → Add to Home Screen on an iPhone). It
+works offline from then on, and updates itself on the next start after a new deploy.
 
 Drop an image on the window to open it, or to add it as a layer.
 
@@ -77,6 +83,24 @@ npm run shots        # screenshots of the main screens into shots/
 Node 20 or later. The browser tests drive the built page in a local Chrome over the
 DevTools protocol; set `CHROME=/path/to/chrome` if it is somewhere unusual.
 
+The build also writes `build/pages/`: the same page as a PWA — a manifest, icons and a
+service worker. Its PNG icons are kept in `assets/pwa/`; after the icon in
+`src/app/icons.ts` changes, `node tools/icons.mjs` draws them again (with Chrome).
+
+## Releases
+
+GitHub Actions does the publishing:
+
+- every push to `main` is tested and deployed to GitHub Pages (Settings → Pages → Source:
+  GitHub Actions, once);
+- a tag `v<version>` builds, tests and publishes a release with `paint-v<version>.html` and
+  its `SHA256SUMS.txt`. The tag must match `package.json`'s version:
+
+  ```sh
+  npm version 0.2.0      # writes package.json, commits, tags v0.2.0
+  git push --follow-tags
+  ```
+
 ## Layout
 
 ```
@@ -103,9 +127,13 @@ src/
     prompts.ts     dialogs behind commands
     ui/            menu bar, toolbox, panels, dialogs
   locales/         ru.json, uk.json — keyed by the English text
+  pwa/sw.js        the service worker of the GitHub Pages build
+assets/pwa/        the PWA's PNG icons
 tests/             unit tests (Node) and the browser test (tests/app.mjs)
-tools/             load.mjs (compiles src/ for the tests), i18n.mjs (finds the strings)
-build.mjs          bundles everything into build/paint.html
+tools/             load.mjs (compiles src/ for the tests), i18n.mjs (finds the strings),
+                   icons.mjs (draws assets/pwa/)
+build.mjs          bundles everything into build/paint.html and build/pages/
+.github/workflows/ tests, the GitHub Pages deploy, releases from v* tags
 ```
 
 ## Translations

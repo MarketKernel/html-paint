@@ -1,7 +1,8 @@
 /**
  * Drives the built page in headless Chrome: painting with the brush, undo and redo, a
  * selection erased, layers added, filled, merged and reordered, an adjustment, shapes and
- * text, an OpenRaster file written and read back, and the page on a phone's screen.
+ * text, an OpenRaster file written and read back, and the page on a phone's screen; then the
+ * PWA of build/pages/ over HTTP, offline from its service worker.
  *
  * Needs `npm run build` first and a local Chrome (or `CHROME=/path/to/chrome`). No
  * dependencies beyond Node: the DevTools protocol is spoken over the built-in WebSocket.
@@ -9,14 +10,16 @@
  * `--shots DIR` also saves screenshots of the main screens into DIR.
  */
 import { existsSync } from 'node:fs';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
+import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { basename, extname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { checker, root } from '../tools/load.mjs';
 
 const APP = join(root, 'build', 'paint.html');
+const PAGES = join(root, 'build', 'pages');
 const shotsAt = process.argv.indexOf('--shots');
 const SHOTS = shotsAt > 0 ? process.argv[shotsAt + 1] : null;
 const CHROME =
@@ -38,6 +41,25 @@ if (!existsSync(APP)) {
 
 const { check, done } = checker();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// build/pages/ over HTTP, as GitHub Pages serves it; `pagesDown` plays the network gone.
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.svg': 'image/svg+xml' };
+let pagesDown = false;
+const server = createServer(async (req, res) => {
+  if (pagesDown) return req.socket.destroy();
+  const path = new URL(req.url, 'http://localhost').pathname;
+  const name = path.endsWith('/') ? 'index.html' : basename(path);
+  try {
+    const body = await readFile(join(PAGES, name));
+    res.setHeader('content-type', TYPES[extname(name)] ?? 'application/octet-stream');
+    res.end(body);
+  } catch {
+    res.statusCode = 404;
+    res.end();
+  }
+});
+await new Promise((r) => server.listen(0, '127.0.0.1', r));
+const port = server.address().port;
 
 const profile = await mkdtemp(join(tmpdir(), 'paint-chrome-'));
 const flags = ['--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`, '--no-first-run', '--window-size=1280,820', '--hide-scrollbars'];
@@ -132,6 +154,12 @@ const clickAt = (x, y, opts) => drag([[x, y]], opts);
 const pixel = (x, y, layer = null) =>
   evaluate(`[...(${layer === null ? 'paint.flatten()' : `paint.doc.layers[${layer}].canvas`}).getContext('2d').getImageData(${x}, ${y}, 1, 1).data]`);
 const tool = (id) => evaluate(`paint.setTool(${JSON.stringify(id)})`);
+const until = async (expr, ms = 5000) => {
+  for (const end = Date.now() + ms; Date.now() < end; await sleep(100)) {
+    if (await evaluate(expr).catch(() => false)) return true;
+  }
+  return false;
+};
 
 try {
   await send('Runtime.enable');
@@ -533,6 +561,18 @@ try {
   await sleep(100);
   await shot('phone-panels');
 
+  // The PWA: its CSP lets in the manifest and the service worker, which keeps it offline.
+  await send('Emulation.clearDeviceMetricsOverride');
+  await send('Page.navigate', { url: `http://127.0.0.1:${port}/` });
+  check('pwa: service worker in control', await until(`navigator.serviceWorker.controller !== null`), true);
+  check('pwa: the editor', await until(`typeof paint === 'object' && document.querySelectorAll('.tool').length === 21`), true);
+  check('pwa: manifest parsed', (await send('Page.getAppManifest')).errors, []);
+  check('pwa: installable', (await send('Page.getInstallabilityErrors')).installabilityErrors, []);
+  pagesDown = true;
+  await send('Page.reload');
+  check('pwa: offline', await until(`document.readyState === 'complete' && typeof paint === 'object' && document.querySelectorAll('.tool').length === 21`), true);
+  pagesDown = false;
+
   check('no errors on the page', errors, []);
 } catch (error) {
   console.error(error);
@@ -540,6 +580,7 @@ try {
 } finally {
   ws.close();
   chrome.kill();
+  server.close();
   await sleep(100);
   await rm(profile, { recursive: true, force: true }).catch(() => {});
 }
