@@ -1,6 +1,7 @@
 /**
  * The strings the interface shows, as the dictionaries in src/locales key them: the
- * English text itself, or for a plural its English plural form. They are read from the
+ * English text itself, or for a plural its English plural form, whose value is an object
+ * with a form per plural category of the language. They are read from the
  * t(), tn() and N_() calls in the .ts files under src/, so those must take plain string
  * literals.
  *
@@ -46,8 +47,8 @@ export async function report() {
   for (const [code, dict] of Object.entries(await dictionaries())) {
     const missing = [...strings.keys()].filter((key) => !(key in dict));
     const unused = Object.keys(dict).filter((key) => !strings.has(key));
-    // A plural needs a list of forms, a plain string a string.
-    const wrong = [...strings.entries()].filter(([key, forms]) => key in dict && Array.isArray(dict[key]) !== Array.isArray(forms)).map(([key]) => key);
+    // A plural needs an object of forms, a plain string a string.
+    const wrong = [...strings.entries()].filter(([key, forms]) => key in dict && (typeof dict[key] === 'string') === Boolean(forms)).map(([key]) => key);
     out[code] = { missing, unused, wrong };
   }
   return { strings, languages: out };
@@ -58,7 +59,10 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   if (process.argv.includes('--json')) {
     const code = process.argv[process.argv.indexOf('--json') + 1];
     const missing = languages[code]?.missing ?? [...strings.keys()];
-    console.log(JSON.stringify(Object.fromEntries(missing.map((k) => [k, strings.get(k) ? strings.get(k) : ''])), null, 2));
+    // A plural shows its English forms under the categories the language needs.
+    const categories = new Intl.PluralRules(code ?? 'en').resolvedOptions().pluralCategories;
+    const blank = (k) => (strings.get(k) ? Object.fromEntries(categories.map((c) => [c, c === 'one' ? strings.get(k)[0] : k])) : '');
+    console.log(JSON.stringify(Object.fromEntries(missing.map((k) => [k, blank(k)])), null, 2));
   } else {
     console.log(`${strings.size} strings`);
     for (const [code, { missing, unused, wrong }] of Object.entries(languages)) {

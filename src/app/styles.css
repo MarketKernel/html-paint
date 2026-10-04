@@ -88,7 +88,7 @@ textarea {
   width: 22px;
   height: 22px;
   display: block;
-  margin-right: 6px;
+  margin-inline-end: 6px;
 }
 
 .menus {
@@ -172,7 +172,7 @@ textarea {
   border: 0;
   border-radius: 5px;
   background: none;
-  text-align: left;
+  text-align: start;
   cursor: default;
   white-space: nowrap;
 }
@@ -206,7 +206,7 @@ textarea {
 .menu-keys {
   color: var(--muted);
   font-size: 12px;
-  margin-left: 18px;
+  margin-inline-start: 18px;
 }
 
 .menu-item:hover:not(:disabled) .menu-keys {
@@ -239,8 +239,8 @@ textarea {
   align-items: center;
   gap: 6px;
   font-weight: 600;
-  padding-right: 12px;
-  border-right: 1px solid var(--border);
+  padding-inline-end: 12px;
+  border-inline-end: 1px solid var(--border);
 }
 
 .opt {
@@ -359,7 +359,7 @@ select:focus {
   gap: 3px;
   padding: 8px 6px;
   background: var(--panel);
-  border-right: 1px solid var(--border);
+  border-inline-end: 1px solid var(--border);
   overflow-y: auto;
   scrollbar-width: none;
 }
@@ -428,7 +428,7 @@ select:focus {
   flex-direction: column;
   min-height: 0;
   background: var(--panel);
-  border-left: 1px solid var(--border);
+  border-inline-start: 1px solid var(--border);
   overflow: hidden;
 }
 
@@ -626,7 +626,7 @@ canvas.alpha {
 
 .layer-opacity-value {
   width: 34px;
-  text-align: right;
+  text-align: end;
   color: var(--muted);
   font-size: 12px;
 }
@@ -884,7 +884,7 @@ canvas.alpha {
 
 .field--check {
   grid-template-columns: 1fr;
-  padding-left: 140px;
+  padding-inline-start: 140px;
 }
 
 .check {
@@ -980,7 +980,7 @@ canvas.alpha {
 }
 
 .shortcuts td:last-child {
-  text-align: right;
+  text-align: end;
   white-space: nowrap;
 }
 
@@ -1021,7 +1021,7 @@ kbd {
   .panels {
     position: absolute;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     bottom: 0;
     z-index: 20;
     width: min(290px, 85vw);
@@ -1043,7 +1043,7 @@ kbd {
   }
 
   .field--check {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 
   .shortcuts {

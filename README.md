@@ -1,10 +1,34 @@
 # HTML Paint
 
+<!-- languages -->
+<h3 align="center">
+<b>🇬🇧 English</b> ·
+<a href="docs/readme/README.zh.md">🇨🇳 中文</a> ·
+<a href="docs/readme/README.hi.md">🇮🇳 हिन्दी</a> ·
+<a href="docs/readme/README.es.md">🇪🇸 Español</a> ·
+<a href="docs/readme/README.fr.md">🇫🇷 Français</a> ·
+<a href="docs/readme/README.ar.md">🇸🇦 العربية</a> ·
+<a href="docs/readme/README.bn.md">🇧🇩 বাংলা</a> ·
+<a href="docs/readme/README.pt.md">🇧🇷 Português</a> ·
+<a href="docs/readme/README.ru.md">🇷🇺 Русский</a> ·
+<a href="docs/readme/README.ur.md">🇵🇰 اردو</a> ·
+<a href="docs/readme/README.id.md">🇮🇩 Bahasa Indonesia</a> ·
+<a href="docs/readme/README.de.md">🇩🇪 Deutsch</a> ·
+<a href="docs/readme/README.ja.md">🇯🇵 日本語</a> ·
+<a href="docs/readme/README.mr.md">🇮🇳 मराठी</a> ·
+<a href="docs/readme/README.te.md">🇮🇳 తెలుగు</a> ·
+<a href="docs/readme/README.tr.md">🇹🇷 Türkçe</a> ·
+<a href="docs/readme/README.uk.md">🇺🇦 Українська</a>
+</h3>
+<!-- /languages -->
+
 An image editor in the spirit of Paint.NET, as **one standalone HTML file**. Layers,
 selections, adjustments and effects, a history you can step back through — and nothing
 leaves the page: it opens from disk, works offline, and loads nothing from the network.
 
-The interface is in English, Russian and Ukrainian (View → Language), in a light or a dark
+The interface is in 17 languages (View → Language…) — English, Chinese, Hindi, Spanish,
+French, Arabic, Bengali, Portuguese, Russian, Urdu, Indonesian, German, Japanese, Marathi,
+Telugu, Turkish and Ukrainian; Arabic and Urdu right to left. It comes in a light or a dark
 theme, and fits a phone's screen as well as a desktop's.
 
 ## Use it
@@ -140,8 +164,13 @@ build.mjs          bundles everything into build/paint.html and build/pages/
 
 Every string shown is a `t('English text')` (or `N_('…')` where a table is built before the
 language is known) with a plain string literal. `node tools/i18n.mjs` lists what each
-dictionary lacks or no longer needs; `npm test` fails until they match. A new language is a
-new `src/locales/<code>.json` and a line in `src/app/language.ts`.
+dictionary lacks or no longer needs; `npm test` fails until they match. A plural's value is
+an object with a form for each of the language's plural categories (`one`, `few`, `many`,
+`other`…). A new language is a new `src/locales/<code>.json` and a line in
+`src/app/language.ts`.
+
+This README is translated in `docs/readme/README.<code>.md`; the list of languages between
+`<!-- languages -->` marks is the same in each.
 
 ## License
 

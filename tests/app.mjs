@@ -539,9 +539,17 @@ try {
   }
 
   // Russian, then the dark theme.
-  await evaluate(`paint.setting('language', 'ru'); document.querySelector('[data-menu="view"]').click(); document.querySelector('.menu [data-command="language-ru"]').click()`);
+  // Arabic first: the page turns right to left.
+  await evaluate(`paintRun('language-ar')`);
+  await sleep(100);
+  check('Arabic is right to left', await evaluate(`[document.documentElement.lang, document.documentElement.dir]`), ['ar', 'rtl']);
+  await shot('desktop-ar');
+  await evaluate(`document.querySelector('[data-menu="view"]').click(); document.querySelector('.menu [data-command="language"]').click()`);
+  await sleep(150);
+  await evaluate(`(() => { const d = document.querySelector('dialog[open]'); d.querySelector('[name="language"]').value = 'ru'; d.querySelector('.button--primary').click(); })()`);
   await sleep(100);
   check('the menus in Russian', await evaluate(`document.querySelector('.menu-button').textContent`), 'Файл');
+  check('left to right again', await evaluate(`document.documentElement.dir`), 'ltr');
   await evaluate(`document.querySelector('[data-menu="view"]').click(); document.querySelector('.menu [data-command="theme-dark"]').click()`);
   await sleep(100);
   check('dark theme', await evaluate(`document.documentElement.dataset.theme`), 'dark');

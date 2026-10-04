@@ -7,6 +7,8 @@ import { app } from '../app';
 import { COMMANDS, commandLabel, formatKeys, MENUS, runCommand } from '../commands';
 import { APP_ICON, icon } from '../icons';
 
+const isRtl = () => document.documentElement.dir === 'rtl';
+
 export function mountMenubar(bar: HTMLElement): void {
   let openId: string | null = null;
   const dropdown = document.createElement('div');
@@ -64,7 +66,9 @@ export function mountMenubar(bar: HTMLElement): void {
     const r = button.getBoundingClientRect();
     dropdown.hidden = false;
     dropdown.classList.add('menu--open');
-    dropdown.style.left = `${Math.max(4, Math.min(r.left, window.innerWidth - dropdown.offsetWidth - 4))}px`;
+    // Right to left, the menu hangs from the button's right edge.
+    const x = isRtl() ? r.right - dropdown.offsetWidth : r.left;
+    dropdown.style.left = `${Math.max(4, Math.min(x, window.innerWidth - dropdown.offsetWidth - 4))}px`;
     dropdown.style.top = `${r.bottom + 2}px`;
     dropdown.style.maxHeight = `${window.innerHeight - r.bottom - 12}px`;
   };
@@ -99,7 +103,8 @@ export function mountMenubar(bar: HTMLElement): void {
       items[(at + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length]?.focus();
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
       const i = MENUS.findIndex((m) => m.id === openId);
-      show(MENUS[(i + (e.key === 'ArrowRight' ? 1 : MENUS.length - 1)) % MENUS.length]!.id);
+      const next = (e.key === 'ArrowRight') !== isRtl();
+      show(MENUS[(i + (next ? 1 : MENUS.length - 1)) % MENUS.length]!.id);
       dropdown.querySelector<HTMLButtonElement>('.menu-item:not([disabled])')?.focus();
     }
   });

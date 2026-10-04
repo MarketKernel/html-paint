@@ -1,11 +1,12 @@
 // The dialogs behind menu commands: a new image, the image and canvas sizes, a layer's
-// properties, and About.
+// properties, the language, and About.
 
 import { N_, t } from '../core/i18n';
 import { BLEND_MODES, type BlendMode } from '../core/ora';
 import { app } from './app';
 import type { Layer } from './document';
 import { confirmDiscard } from './io';
+import { applyLanguage, LANGUAGES } from './language';
 import { blankDocument, resizeCanvas, resizeImage, setLayerProps } from './ops';
 import { form, showHtml } from './ui/dialog';
 
@@ -142,6 +143,17 @@ export async function layerPropertiesDialog(layer: Layer = app.layer): Promise<v
   // An opacity from a file (0.555) that shows as 56% stays as it was unless it was moved.
   const opacity = Number(values.opacity) === Math.round(before.opacity * 100) ? before.opacity : Number(values.opacity) / 100;
   setLayerProps(layer, { name: String(values.name).trim() || before.name, visible: Boolean(values.visible), blend: values.blend as BlendMode, opacity });
+}
+
+// Seventeen languages are too many for the View menu: they are a list in a dialog.
+export async function languageDialog(): Promise<void> {
+  const values = await form({
+    title: t('Language'),
+    fields: [{ kind: 'select', id: 'language', label: t('Language'), value: app.settings.language, options: [['auto', t('As the browser')], ...LANGUAGES.map((l): [string, string] => [l.code, l.name])] }],
+  });
+  if (!values) return;
+  app.setting('language', String(values.language));
+  applyLanguage();
 }
 
 export function about(): void {

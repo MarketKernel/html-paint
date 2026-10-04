@@ -12,7 +12,7 @@ import { applyEffect, EFFECTS } from './effects';
 import { importLayers, open, save, saveAs } from './io';
 import { applyLanguage, applyTheme, LANGUAGES } from './language';
 import * as ops from './ops';
-import { about, canvasSizeDialog, layerPropertiesDialog, newImage, resizeImageDialog } from './prompts';
+import { about, canvasSizeDialog, languageDialog, layerPropertiesDialog, newImage, resizeImageDialog } from './prompts';
 import { showHtml } from './ui/dialog';
 import { isTyping } from './view';
 
@@ -71,6 +71,8 @@ const commands: Command[] = [
     },
     checked: () => app.settings.theme === theme,
   })),
+  { id: 'language', label: N_('Language…'), run: languageDialog },
+  // Not in a menu; the dialog above chooses. They let the tests and paintRun switch.
   {
     id: 'language-auto',
     label: N_('Language: as the browser'),
@@ -125,7 +127,7 @@ export const commandLabel = (c: Command): string => (typeof c.label === 'functio
 export const MENUS: { id: string; label: string; items: string[] }[] = [
   { id: 'file', label: N_('File'), items: ['new', 'open', '-', 'save', 'save-as'] },
   { id: 'edit', label: N_('Edit'), items: ['undo', 'redo', '-', 'cut', 'copy', 'copy-merged', 'paste', 'paste-layer', 'paste-image', '-', 'select-all', 'deselect', 'invert-selection', '-', 'erase-selection', 'fill-selection'] },
-  { id: 'view', label: N_('View'), items: ['zoom-in', 'zoom-out', 'zoom-fit', 'zoom-actual', '-', 'grid', 'panels', '-', 'theme-auto', 'theme-light', 'theme-dark', '-', 'language-auto', ...LANGUAGES.map((l) => `language-${l.code}`)] },
+  { id: 'view', label: N_('View'), items: ['zoom-in', 'zoom-out', 'zoom-fit', 'zoom-actual', '-', 'grid', 'panels', '-', 'theme-auto', 'theme-light', 'theme-dark', '-', 'language'] },
   { id: 'image', label: N_('Image'), items: ['crop', 'resize', 'canvas-size', '-', 'flip-h', 'flip-v', '-', 'rotate-cw', 'rotate-ccw', 'rotate-180', '-', 'flatten'] },
   { id: 'layers', label: N_('Layers'), items: ['layer-add', 'layer-delete', 'layer-duplicate', 'layer-merge', 'layer-import', '-', 'layer-flip-h', 'layer-flip-v', '-', 'layer-up', 'layer-down', '-', 'layer-properties'] },
   { id: 'adjustments', label: N_('Adjustments'), items: EFFECTS.filter((e) => e.menu === 'adjustments').map((e) => e.id) },
