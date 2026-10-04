@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Nothing leaves the page: no fetch, no images or fonts from elsewhere, no forms posting
+     out. blob: and data: carry the images opened, pasted and saved. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<title>HTML Paint</title>
+<link rel="icon" href="__ICON__">
+<style>/*__STYLES__*/</style>
+</head>
+<body>
+<div class="app">
+  <header id="menubar" class="menubar"></header>
+  <div id="options" class="options"></div>
+  <main class="main">
+    <nav id="toolbox" class="toolbox"></nav>
+    <section id="workspace" class="workspace">
+      <canvas id="view" class="view"></canvas>
+    </section>
+    <aside class="panels">
+      <section id="colors" class="panel panel--colors"></section>
+      <section id="layers" class="panel panel--layers"></section>
+      <section id="history" class="panel panel--history"></section>
+    </aside>
+  </main>
+  <footer id="status" class="status"></footer>
+</div>
+<script>/*__APP__*/</script>
+</body>
+</html>

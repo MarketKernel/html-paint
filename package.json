@@ -1,0 +1,24 @@
+{
+  "name": "html-paint",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An image editor in the spirit of Paint.NET — layers, selections, effects — as one standalone HTML file",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node tests/color.mjs && node tests/raster.mjs && node tests/filters.mjs && node tests/zip.mjs && node tests/i18n.mjs",
+    "test:browser": "node --experimental-websocket tests/app.mjs",
+    "shots": "node build.mjs && mkdir -p shots && node --experimental-websocket tests/app.mjs --shots shots",
+    "check": "npm run typecheck && npm test && npm run build && npm run test:browser"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12",
+    "typescript": "^5.9.3"
+  }
+}

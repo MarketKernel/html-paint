@@ -1,0 +1,96 @@
+// The interface's icons: 24×24, drawn with lines in the current colour, inlined so the
+// page needs nothing from elsewhere.
+
+const D = 'stroke-dasharray="3 2.4"';
+const SOFT = 'fill="currentColor" fill-opacity=".3"';
+
+const ICONS: Record<string, string> = {
+  'select-rect': `<rect x="4" y="4" width="16" height="16" rx="1" ${D}/>`,
+  'select-ellipse': `<ellipse cx="12" cy="12" rx="9" ry="7" ${D}/>`,
+  lasso: `<path d="M7.5 17C4 15.8 3 13.2 4 10.7 5.5 6.6 10 4.6 14.5 5S21 8 20.5 11 16 16.2 11 16.2c-1.4 0-2.6.2-3.5.8z" ${D}/><path d="M7.5 17c-1.3 1.6-.8 3.2.9 4.2"/>`,
+  wand: `<path d="M4 20 14.5 9.5"/><path d="m15 3 .9 2.3L18 6l-2.1.8L15 9l-.9-2.2L12 6l2.1-.7z"/><path d="M20 11v2.5M18.8 12.2h2.5M8 3.5V6M6.8 4.7h2.5M20 2.5V5M18.8 3.7h2.5"/>`,
+  move: `<path d="M12 3v18M3 12h18"/><path d="m9 6 3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/>`,
+  'move-selection': `<rect x="7" y="7" width="10" height="10" ${D}/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><path d="m10 3.5 2-2 2 2M10 20.5l2 2 2-2M3.5 10l-2 2 2 2M20.5 10l2 2-2 2"/>`,
+  zoom: `<circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9"/>`,
+  'zoom-in': `<circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9M10.5 7.5v6M7.5 10.5h6"/>`,
+  'zoom-out': `<circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.9-4.9M7.5 10.5h6"/>`,
+  pan: `<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M11 10.5V4a1.5 1.5 0 0 1 3 0v6.5"/><path d="M14 10.5V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M17 9.5a1.5 1.5 0 0 1 3 0V15a7 7 0 0 1-7 7h-1.5c-2.3 0-3.7-.8-5-2.1l-3.1-3.2a1.6 1.6 0 0 1 2.3-2.2L8 16.3"/>`,
+  brush: `<path d="M21 3c-3.2 1.1-7.6 5-10.4 8.4l2 2C16 10.6 19.9 6.2 21 3z"/><path d="M10.4 11.6c-2.4 0-4 1.5-4 3.6 0 1.9-1.4 3.3-3.4 3.8 3 1.6 9 1.1 9.4-5.4"/>`,
+  pencil: `<path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/><path d="m14.5 5.5 3 3"/>`,
+  eraser: `<path d="m7 21-4.3-4.3a1 1 0 0 1 0-1.4l10-10a1 1 0 0 1 1.4 0l5.6 5.6a1 1 0 0 1 0 1.4L11 21z"/><path d="M22 21H7"/><path d="m5.5 10.5 8 8"/>`,
+  fill: `<path d="m19 11-8-8-8.6 8.6a2 2 0 0 0 0 2.8l5.2 5.2a2 2 0 0 0 2.8 0z"/><path d="m5 2 5 5"/><path d="M2.5 13H18"/><path d="M22 20a2 2 0 1 1-4 0c0-1.6 1.7-2.4 2-4 .3 1.6 2 2.4 2 4z"/>`,
+  gradient: `<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 21 21 3" opacity=".9"/><path d="M3 15 15 3M9 21 21 9" opacity=".55"/><path d="M3 9l6-6M15 21l6-6" opacity=".25"/>`,
+  picker: `<path d="m2.5 21.5 1-1h2.8l8.4-8.4"/><path d="M3.5 20.5v-2.8l8.4-8.4"/><path d="m14.5 6.5 3.4-3.4a2.1 2.1 0 1 1 3 3l-3.4 3.4.5.5a1.4 1.4 0 0 1-2 2l-4.5-4.5a1.4 1.4 0 0 1 2-2z"/>`,
+  text: `<path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/>`,
+  line: `<path d="M5 19 19 5"/><circle cx="5" cy="19" r="1.6"/><circle cx="19" cy="5" r="1.6"/>`,
+  curve: `<path d="M4 19C7 4 17 20 20 5"/><circle cx="4" cy="19" r="1.6"/><circle cx="20" cy="5" r="1.6"/>`,
+  rect: `<rect x="3.5" y="5.5" width="17" height="13" rx="1"/>`,
+  ellipse: `<ellipse cx="12" cy="12" rx="9" ry="6.5"/>`,
+  airbrush: `<path d="M3 3h.01M7 5h.01M11 7h.01M3 7h.01M7 9h.01M3 11h.01" stroke-width="2.4"/><rect x="15" y="4" width="4" height="4"/><path d="m19 8 2 2.5V21a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V10.5L15 8"/><path d="m13 14 8-2M13 18.5l8-2"/>`,
+  clone: `<path d="M5 22h14"/><path d="M19.3 14.3a2.5 2.5 0 0 0-1.8-.8h-11A2.5 2.5 0 0 0 4 16v2h16v-2a2.5 2.5 0 0 0-.7-1.7z"/><path d="M14 13.5V9.6c0-1.1.6-2 1.3-2.9a4 4 0 1 0-6.6 0c.7.9 1.3 1.8 1.3 2.9v3.9"/>`,
+
+  undo: `<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>`,
+  redo: `<path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/>`,
+  plus: `<path d="M12 5v14M5 12h14"/>`,
+  trash: `<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/>`,
+  duplicate: `<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2"/>`,
+  merge: `<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 20h16"/>`,
+  up: `<path d="m18 15-6-6-6 6"/>`,
+  down: `<path d="m6 9 6 6 6-6"/>`,
+  right: `<path d="m9 18 6-6-6-6"/>`,
+  props: `<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>`,
+  eye: `<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>`,
+  'eye-off': `<path d="M2 10s3.5 5 10 5 10-5 10-5"/><path d="m4.5 13-2 2.5M9 14.8 8.2 18M15 14.8l.8 3.2M19.5 13l2 2.5"/>`,
+  swap: `<path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/>`,
+  reset: `<rect x="3" y="3" width="11" height="11" rx="1" fill="currentColor"/><rect x="10" y="10" width="11" height="11" rx="1"/>`,
+  image: `<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>`,
+  layers: `<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>`,
+  crop: `<path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/>`,
+  resize: `<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>`,
+  rotate: `<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>`,
+  'flip-h': `<path d="M12 3v18" stroke-dasharray="2 2"/><path d="M9 6 3 18h6z"/><path d="m15 6 6 12h-6z"/>`,
+  'flip-v': `<path d="M3 12h18" stroke-dasharray="2 2"/><path d="M6 9 18 3v6z"/><path d="m6 15 12 6v-6z"/>`,
+  effect: `<path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15v4M17 17h4M5 3v3M3.5 4.5h3"/>`,
+  adjust: `<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>`,
+  paste: `<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>`,
+  cut: `<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/>`,
+  panel: `<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/>`,
+  close: `<path d="M18 6 6 18M6 6l12 12"/>`,
+  check: `<path d="M20 6 9 17l-5-5"/>`,
+  menu: `<path d="M4 6h16M4 12h16M4 18h16"/>`,
+  open: `<path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9L9.6 3.9A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/>`,
+  save: `<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>`,
+  fit: `<path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>`,
+  select: `<rect x="4" y="4" width="16" height="16" rx="1" ${D}/>`,
+  deselect: `<rect x="4" y="4" width="16" height="16" rx="1" ${D}/><path d="m9 9 6 6M15 9l-6 6"/>`,
+
+  'aa-on': `<path d="M4 19c2-9 6-13 16-14"/>`,
+  'aa-off': `<path d="M4 20v-3h3v-3h3v-3h3V8h3V5h4"/>`,
+  'shape-outline': `<rect x="4" y="4" width="16" height="16" rx="2"/>`,
+  'shape-fill': `<rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/>`,
+  'shape-both': `<rect x="4" y="4" width="16" height="16" rx="2" ${SOFT} stroke-width="2.5"/>`,
+  'mode-replace': `<rect x="4" y="4" width="16" height="16" ${SOFT} ${D}/>`,
+  'mode-add': `<path d="M3 3h11v5h7v13H8v-5H3z" ${SOFT} stroke="none"/><rect x="3" y="3" width="11" height="13" ${D}/><rect x="8" y="8" width="13" height="13" ${D}/>`,
+  'mode-subtract': `<path d="M3 3h11v5H8v8H3z" ${SOFT} stroke="none"/><rect x="3" y="3" width="11" height="13" ${D}/><rect x="8" y="8" width="13" height="13" ${D}/>`,
+  'mode-intersect': `<rect x="8" y="8" width="6" height="8" fill="currentColor" fill-opacity=".45" stroke="none"/><rect x="3" y="3" width="11" height="13" ${D}/><rect x="8" y="8" width="13" height="13" ${D}/>`,
+  'gradient-linear': `<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 12h10m-3-3 3 3-3 3"/>`,
+  'gradient-reflected': `<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 6v12" stroke-dasharray="2 2"/><path d="M15 12h3m-1.5-1.5L18 12l-1.5 1.5M9 12H6m1.5-1.5L6 12l1.5 1.5"/>`,
+  'gradient-radial': `<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5" opacity=".6"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/>`,
+  'gradient-conic': `<circle cx="12" cy="12" r="9"/><path d="M12 12V3M12 12l6.4 6.4"/><path d="M15.5 4.5a8 8 0 0 1 4 4" opacity=".6"/>`,
+  bold: `<path d="M7 4h6a4 4 0 0 1 0 8H7zM7 12h7a4 4 0 0 1 0 8H7z" stroke-width="2.4"/>`,
+  italic: `<path d="M19 4h-9M14 20H5M15 4 9 20"/>`,
+  underline: `<path d="M6 4v6a6 6 0 0 0 12 0V4"/><path d="M4 20h16"/>`,
+  'align-left': `<path d="M3 6h18M3 12h12M3 18h16"/>`,
+  'align-center': `<path d="M3 6h18M6 12h12M4 18h16"/>`,
+  'align-right': `<path d="M3 6h18M9 12h12M5 18h16"/>`,
+  contiguous: `<path d="M12 4c4 0 8 3 7 8s-4 8-8 7-7-3-7-7 4-8 8-8z" ${SOFT}/><circle cx="12" cy="11" r="1.4" fill="currentColor"/>`,
+  global: `<circle cx="7" cy="7" r="3" ${SOFT}/><circle cx="17" cy="9" r="3" ${SOFT}/><circle cx="9" cy="17" r="3" ${SOFT}/><circle cx="18" cy="18" r="2" ${SOFT}/>`,
+};
+
+export function icon(name: string, className = 'icon'): string {
+  const body = ICONS[name] ?? ICONS.effect!;
+  return `<svg class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+}
+
+// The page's own icon: a brush over a coloured square, for the tab and the title.
+export const APP_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="4" y="4" width="56" height="56" rx="14" fill="#2f6df6"/><rect x="12" y="12" width="20" height="20" rx="4" fill="#ffd23f"/><rect x="32" y="32" width="20" height="20" rx="4" fill="#ff5d73"/><path d="M52 12c-7 3-16 11-21 18l4 4c7-5 14-15 17-22z" fill="#fff"/><path d="M29 32c-5 0-8 3-8 7 0 4-3 6-7 7 7 3 18 2 19-10" fill="#fff"/></svg>`;
