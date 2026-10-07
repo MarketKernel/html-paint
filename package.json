@@ -1,6 +1,6 @@
 {
   "name": "html-paint",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "An image editor in the spirit of Paint.NET — layers, selections, effects — as one standalone HTML file",
   "license": "MIT",
