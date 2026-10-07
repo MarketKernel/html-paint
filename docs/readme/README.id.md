@@ -44,6 +44,11 @@ aplikasi (tombol instal di bilah alamat; Share → Add to Home Screen di iPhone)
 aplikasi berfungsi tanpa koneksi internet, dan memperbarui dirinya sendiri saat dibuka lagi
 setelah ada deploy baru.
 
+Di Chrome dan Edge pada komputer, aplikasi yang terpasang juga membuka gambar dari sistem:
+pilih aplikasi ini di Open With untuk berkas PNG, JPEG, WebP, GIF, BMP, ICO, AVIF, SVG,
+atau OpenRaster, atau jadikan bawaan. Setiap berkas terbuka di jendelanya sendiri, dan
+Simpan menulis kembali ke berkas itu.
+
 Seret gambar ke jendela untuk membukanya, atau untuk menambahkannya sebagai lapisan.
 
 ## Yang bisa dilakukan

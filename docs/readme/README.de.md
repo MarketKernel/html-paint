@@ -46,6 +46,11 @@ installieren Sie sie als App (die Installieren-Schaltfläche in der Adressleiste
 iPhone über Teilen → Zum Home-Bildschirm). Von da an funktioniert sie offline und
 aktualisiert sich beim nächsten Start selbst, sobald eine neue Version veröffentlicht wurde.
 
+In Chrome und Edge auf dem Computer öffnet die installierte App auch Bilder aus dem
+System: Wählen Sie sie unter „Öffnen mit“ für eine PNG-, JPEG-, WebP-, GIF-, BMP-, ICO-,
+AVIF-, SVG- oder OpenRaster-Datei, oder machen Sie sie zum Standard. Jede Datei öffnet
+sich in einem eigenen Fenster, und Speichern schreibt in sie zurück.
+
 Ziehen Sie ein Bild auf das Fenster, um es zu öffnen oder als Ebene hinzuzufügen.
 
 ## Was es kann

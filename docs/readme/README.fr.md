@@ -46,6 +46,11 @@ installez-le comme une application (le bouton d'installation dans la barre d'adr
 Partager → Sur l'écran d'accueil sur un iPhone). Il fonctionne ensuite hors ligne, et se
 met à jour tout seul au prochain démarrage après un nouveau déploiement.
 
+Dans Chrome et Edge sur ordinateur, l'application installée ouvre aussi les images depuis
+le système : choisissez-la dans « Ouvrir avec » pour un fichier PNG, JPEG, WebP, GIF, BMP,
+ICO, AVIF, SVG ou OpenRaster, ou faites-en l'application par défaut. Chaque fichier
+s'ouvre dans sa propre fenêtre, et Enregistrer écrit dans ce fichier.
+
 Déposez une image sur la fenêtre pour l'ouvrir, ou pour l'ajouter comme calque.
 
 ## Ce qu'il fait

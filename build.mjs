@@ -4,8 +4,8 @@
  * access and no sibling files.
  *
  * Beside it goes build/pages/: the same page as an installable PWA for GitHub Pages — a
- * manifest, icons (assets/pwa/, drawn by tools/icons.mjs) and a service worker that keeps
- * it offline.
+ * manifest (which also offers the app to open pictures with), icons (assets/pwa/, drawn by
+ * tools/icons.mjs) and a service worker that keeps it offline.
  *
  * The version is package.json's and nowhere else; a build from a commit other than the
  * one tagged v<version> shows the commit too — 0.1.0+1a2b3c4.
@@ -66,6 +66,37 @@ async function appIcon() {
   return svg;
 }
 
+/** The MIME type of each extension the editor opens, for the manifest's file_handlers. */
+const MIME_TYPES = {
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+  '.bmp': 'image/bmp',
+  '.ico': 'image/x-icon',
+  '.avif': 'image/avif',
+  '.svg': 'image/svg+xml',
+  '.ora': 'image/openraster',
+};
+
+/**
+ * The files the installed app offers to open, from IMAGE_TYPES in src/app/io.ts — the ones
+ * the Open dialog takes — so the two lists cannot drift apart.
+ */
+async function fileTypes() {
+  const source = await readFile(at('src/app/io.ts'), 'utf8');
+  const list = /const IMAGE_TYPES = \[([^\]]+)\]/.exec(source)?.[1];
+  if (!list) throw new Error('src/app/io.ts has no IMAGE_TYPES');
+  const accept = {};
+  for (const ext of list.match(/\.[a-z0-9]+/g)) {
+    const mime = MIME_TYPES[ext];
+    if (!mime) throw new Error(`build.mjs has no MIME type for ${ext} from IMAGE_TYPES`);
+    (accept[mime] ??= []).push(ext);
+  }
+  return accept;
+}
+
 /** Under assets/pwa/; each goes to build/pages/ under its own name. */
 const PWA_ICONS = ['icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
 
@@ -122,6 +153,9 @@ async function buildPages(html, svg, label) {
       { src: 'icon-512.png', sizes: '512x512', type: 'image/png' },
       { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
     ],
+    // Open With in the system's file manager, once the app is installed. One window per
+    // file: the editor holds one image at a time.
+    file_handlers: [{ action: './', name: 'Image', accept: await fileTypes(), launch_type: 'multiple-clients' }],
   };
 
   await rm(dir, { recursive: true, force: true });

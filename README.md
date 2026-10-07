@@ -42,6 +42,11 @@ Or open it on [GitHub Pages](https://marketkernel.github.io/html-paint/) and ins
 an app (the install button in the address bar; Share → Add to Home Screen on an iPhone). It
 works offline from then on, and updates itself on the next start after a new deploy.
 
+In Chrome and Edge on a computer the installed app also opens pictures from the system:
+pick it under Open With for a PNG, JPEG, WebP, GIF, BMP, ICO, AVIF, SVG or OpenRaster
+file, or make it the default. Each file opens in a window of its own, and Save writes back
+to it.
+
 Drop an image on the window to open it, or to add it as a layer.
 
 ## What it does

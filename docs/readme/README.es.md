@@ -45,6 +45,11 @@ aplicación (el botón de instalar en la barra de direcciones; en un iPhone: Com
 Añadir a pantalla de inicio). A partir de entonces funciona sin conexión, y se actualiza
 solo en el siguiente inicio tras una nueva publicación.
 
+En Chrome y Edge en un ordenador, la aplicación instalada también abre imágenes desde el
+sistema: elíjala en «Abrir con» para un archivo PNG, JPEG, WebP, GIF, BMP, ICO, AVIF, SVG
+u OpenRaster, o hágala la predeterminada. Cada archivo se abre en su propia ventana, y
+Guardar escribe en él.
+
 Suelte una imagen sobre la ventana para abrirla, o para añadirla como una capa.
 
 ## Qué hace

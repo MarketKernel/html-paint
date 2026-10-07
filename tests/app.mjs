@@ -570,12 +570,34 @@ try {
   await shot('phone-panels');
 
   // The PWA: its CSP lets in the manifest and the service worker, which keeps it offline.
+  // Only an installed app gets files from the system, so a stand-in launch queue keeps
+  // the page's consumer for the test to call.
   await send('Emulation.clearDeviceMetricsOverride');
+  const { identifier: launchStub } = await send('Page.addScriptToEvaluateOnNewDocument', {
+    source: `Object.defineProperty(window, 'launchQueue', { configurable: true, value: { setConsumer: (fn) => { window.paintLaunch = fn; } } })`,
+  });
   await send('Page.navigate', { url: `http://127.0.0.1:${port}/` });
   check('pwa: service worker in control', await until(`navigator.serviceWorker.controller !== null`), true);
   check('pwa: the editor', await until(`typeof paint === 'object' && document.querySelectorAll('.tool').length === 21`), true);
-  check('pwa: manifest parsed', (await send('Page.getAppManifest')).errors, []);
+  const appManifest = await send('Page.getAppManifest');
+  check('pwa: manifest parsed', appManifest.errors, []);
   check('pwa: installable', (await send('Page.getInstallabilityErrors')).installabilityErrors, []);
+  // The protocol's parsed manifest leaves file handlers out: the text the page got has them.
+  check('pwa: opens pictures from the system', JSON.parse(appManifest.data).file_handlers?.flatMap((h) => Object.values(h.accept).flat()).sort(), ['.avif', '.bmp', '.gif', '.ico', '.jpeg', '.jpg', '.ora', '.png', '.svg', '.webp']);
+  await evaluate(`(async () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 37;
+    canvas.height = 23;
+    const blob = await new Promise((r) => canvas.toBlob(r, 'image/png'));
+    const handle = await (await navigator.storage.getDirectory()).getFileHandle('launched.png', { create: true });
+    const writable = await handle.createWritable();
+    await writable.write(blob);
+    await writable.close();
+    await paintLaunch({ files: [handle] });
+  })()`);
+  check('pwa: a launched file opens', await until(`paint.doc.width === 37 && paint.doc.height === 23`), true);
+  check('pwa: named after it, saved back to it', await evaluate(`[paint.doc.name, paint.doc.file?.name, paint.doc.file?.handle?.name]`), ['launched', 'launched.png', 'launched.png']);
+  await send('Page.removeScriptToEvaluateOnNewDocument', { identifier: launchStub });
   pagesDown = true;
   await send('Page.reload');
   check('pwa: offline', await until(`document.readyState === 'complete' && typeof paint === 'object' && document.querySelectorAll('.tool').length === 21`), true);

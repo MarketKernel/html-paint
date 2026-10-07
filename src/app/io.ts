@@ -85,6 +85,24 @@ export async function openFile(file: File, handle?: FileSystemFileHandle): Promi
   }
 }
 
+interface LaunchQueue {
+  setConsumer(consumer: (params: { files: readonly FileSystemHandle[] }) => void): void;
+}
+
+// The installed app is one the system offers to open pictures with (build.mjs lists the
+// types in its manifest). Each file comes to a window of its own, through the launch
+// queue, as a handle the image can be saved back to.
+export function openLaunchedFiles(): void {
+  const queue = (window as unknown as { launchQueue?: LaunchQueue }).launchQueue;
+  queue?.setConsumer(async ({ files }) => {
+    const handle = files.find((h): h is FileSystemFileHandle => h.kind === 'file');
+    if (!handle) return;
+    app.finish();
+    if (!(await confirmDiscard())) return;
+    await openFile(await handle.getFile(), handle);
+  });
+}
+
 interface OpenFilePicker {
   showOpenFilePicker?(options: object): Promise<FileSystemFileHandle[]>;
   showSaveFilePicker?(options: object): Promise<FileSystemFileHandle>;

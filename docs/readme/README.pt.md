@@ -43,6 +43,11 @@ aplicativo (o botão de instalação na barra de endereço; Compartilhar → Adi
 Início em um iPhone). A partir daí, funciona offline, e se atualiza sozinho na próxima vez
 que abrir depois de um novo lançamento.
 
+No Chrome e no Edge em um computador, o aplicativo instalado também abre imagens a partir
+do sistema: escolha-o em «Abrir com» para um arquivo PNG, JPEG, WebP, GIF, BMP, ICO, AVIF,
+SVG ou OpenRaster, ou torne-o o padrão. Cada arquivo abre em uma janela própria, e Salvar
+grava de volta nele.
+
 Solte uma imagem sobre a janela para abri-la, ou para adicioná-la como camada.
 
 ## O que ele faz

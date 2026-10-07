@@ -1,10 +1,11 @@
 // Starts the page: the view, the tools, the panels and the keyboard, a blank image to
-// begin with, files dropped on the window, and a warning before unsaved work is closed.
+// begin with, files dropped on the window or opened with the installed app, and a warning
+// before unsaved work is closed.
 
 import { t } from '../core/i18n';
 import { app } from './app';
 import { installKeyboard, runCommand } from './commands';
-import { dropped, encode, readDocument } from './io';
+import { dropped, encode, openLaunchedFiles, readDocument } from './io';
 import { applyLanguage, applyTheme } from './language';
 import { blankDocument } from './ops';
 import { TOOLS } from './tools/index';
@@ -52,6 +53,7 @@ app.on('tool', () => app.view.updateCursor());
 
 blankDocument(800, 600, 'white');
 app.view.updateCursor();
+openLaunchedFiles();
 
 // Files dragged onto the window open, or join the image as layers.
 window.addEventListener('dragover', (e) => {

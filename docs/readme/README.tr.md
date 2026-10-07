@@ -44,6 +44,11 @@ uygulama olarak yükleyin (adres çubuğundaki yükleme düğmesi; iPhone'da Pay
 Ekle). O andan sonra çevrimdışı çalışır ve yeni bir dağıtımdan sonraki ilk açılışta kendini
 günceller.
 
+Bilgisayarda Chrome ve Edge'de yüklü uygulama resimleri sistemden de açar: PNG, JPEG,
+WebP, GIF, BMP, ICO, AVIF, SVG ya da OpenRaster dosyası için Birlikte Aç menüsünden onu
+seçin ya da varsayılan yapın. Her dosya kendi penceresinde açılır ve Kaydet dosyanın
+kendisine yazar.
+
 Bir görüntüyü pencerenin üzerine bırakarak açabilir ya da katman olarak ekleyebilirsiniz.
 
 ## Neler yapabilir
